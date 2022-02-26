@@ -10,47 +10,61 @@
     app:cardCornerRadius="@dimen/card_corner_radius"
     app:cardElevation="@dimen/card_elevation"
     >
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
 
-    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    <TextView
-        android:id="@+id/place_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/medium_spacing"
-        android:textColor="@color/dark_gray"
-        android:textSize="@dimen/large_text_size"
-        app:layout_constraintEnd_toStartOf="@+id/map_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Place Name" />
+        >
 
-    <ImageView
-        android:id="@+id/map_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/medium_spacing"
-        android:contentDescription="@string/shows_a_map"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_map"
-        app:tint="@color/dark_gray" />
+        <TextView
+            android:id="@+id/place_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/medium_spacing"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/large_text_size"
+            app:layout_constraintEnd_toStartOf="@+id/map_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Place Name" />
 
-    <TextView
-        android:id="@+id/date_place_added"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/small_spacing"
-        android:textColor="@color/dark_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/map_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_name"
-        tools:text="01/01/2022" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/map_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_spacing"
+            android:contentDescription="@string/shows_a_map"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_dialog_map"
+            app:tint="@color/dark_gray" />
+
+        <TextView
+            android:id="@+id/date_place_added"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_spacing"
+            android:textColor="@color/dark_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/map_icon"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="01/01/2022" />
+
+        <TextView
+            android:id="@+id/place_reason"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/medium_spacing"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/medium_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/date_place_added"
+            app:layout_constraintEnd_toStartOf="@+id/map_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/place_name"
+            tools:text="Place Reason" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

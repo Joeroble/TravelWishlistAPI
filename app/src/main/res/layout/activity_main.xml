@@ -44,7 +44,7 @@
         android:padding="@dimen/small_spacing"
         android:text="@string/add"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="@+id/new_place_name"
+        app:layout_constraintBottom_toBottomOf="@+id/new_place_reason"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_place_name" />
 
@@ -53,8 +53,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/new_place_reason"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <EditText
+        android:id="@+id/new_place_reason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_spacing"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/what_is_your_reason_for_going"
+        android:inputType="none|text"
+        android:minHeight="48dp"
+        android:padding="@dimen/small_spacing"
+        app:layout_constraintEnd_toStartOf="@+id/add_new_place_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_place_name" />
 

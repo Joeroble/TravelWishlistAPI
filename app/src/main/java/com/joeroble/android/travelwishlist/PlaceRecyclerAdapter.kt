@@ -24,7 +24,9 @@ class PlaceRecyclerAdapter(private val places: List<Place>,
         inner class ViewHolder(private val view: View): RecyclerView.ViewHolder(view){
             fun bind(place: Place){
                 val placeNameTextView: TextView = view.findViewById(R.id.place_name)
+                val placeReasonTextView: TextView = view.findViewById(R.id.place_reason)
                 placeNameTextView.text = place.name
+                placeReasonTextView.text = place.reason
 
                 val dateCreatedOnTextView: TextView = view.findViewById(R.id.date_place_added)
                 val createdOnText = view.context.getString(R.string.created_on, place.formattedDate())
