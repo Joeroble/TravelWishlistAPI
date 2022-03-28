@@ -3,6 +3,7 @@ package com.joeroble.android.travelwishlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 interface OnListItemClickedListener{
-    fun onListItemClicked(place:Place)
+    fun onMapRequestButtonClicked(place:Place)
+    fun onStarredStatusChanged(place: Place, isStarred: Boolean)
 }
 
 
@@ -34,9 +36,17 @@ class PlaceRecyclerAdapter(private val places: List<Place>,
 
                 val mapIcon: ImageView = view.findViewById(R.id.map_icon)
                 mapIcon.setOnClickListener{
-                    onListItemClickedListener.onListItemClicked(place)
+                    onListItemClickedListener.onMapRequestButtonClicked(place)
 
                 }
+
+                val starCheck = view.findViewById<CheckBox>(R.id.star_check)
+                starCheck.setOnClickListener(null)
+                starCheck.isChecked = place.starred
+                starCheck.setOnClickListener{
+                    onListItemClickedListener.onStarredStatusChanged(place,starCheck.isChecked)
+                }
+
             }
         }
 

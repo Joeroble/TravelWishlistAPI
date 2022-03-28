@@ -90,29 +90,34 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         }
     }
 
-    override fun  onListItemClicked(place:Place){
+    override fun  onMapRequestButtonClicked(place:Place){
       //  Toast.makeText(this, "${place.name} map icon was clicked", Toast.LENGTH_SHORT).show()
         val placeLocationUri = Uri.parse("geo:0,0?q=${place.name}")
         val mapIntent = Intent(Intent.ACTION_VIEW, placeLocationUri)
         startActivity(mapIntent)
     }
 
-    override fun onListItemMoved(from: Int, to: Int) {
-        placesViewModel.movePlace(from, to)
-        placeRecyclerAdapter.notifyItemMoved(from, to)
+    override fun onStarredStatusChanged(place: Place, isStarred: Boolean) {
+        place.starred = isStarred
+        placesViewModel.updatePlace(place)
     }
+
+//    override fun onListItemMoved(from: Int, to: Int) {
+//        placesViewModel.movePlace(from, to)
+//        placeRecyclerAdapter.notifyItemMoved(from, to)
+//    }
 
     override fun onListItemDeleted(position: Int) {
       val deletedPlace =  placesViewModel.deletePlace(position)
         placeRecyclerAdapter.notifyItemRemoved(position)
 
-        Snackbar.make(findViewById(R.id.wishlist_container), getString(R.string.place_deleted,deletedPlace.name), Snackbar.LENGTH_LONG)
-            .setActionTextColor(resources.getColor(R.color.red))
-            .setBackgroundTint(resources.getColor(R.color.dark_gray))
-            .setAction(getString(R.string.undo)) {// display an "UNDO"
-                placesViewModel.addNewPlace(deletedPlace, position)
-                placeRecyclerAdapter.notifyItemInserted(position)
-            }.show()
+//        Snackbar.make(findViewById(R.id.wishlist_container), getString(R.string.place_deleted,deletedPlace.name), Snackbar.LENGTH_LONG)
+//            .setActionTextColor(resources.getColor(R.color.red))
+//            .setBackgroundTint(resources.getColor(R.color.dark_gray))
+//            .setAction(getString(R.string.undo)) {// display an "UNDO"
+//                placesViewModel.addNewPlace(deletedPlace, position)
+//                placeRecyclerAdapter.notifyItemInserted(position)
+//            }.show()
 
     }
 
