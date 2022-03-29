@@ -16,7 +16,7 @@ interface OnListItemClickedListener{
 }
 
 
-class PlaceRecyclerAdapter(private val places: List<Place>,
+class PlaceRecyclerAdapter( var places: List<Place>,
                           private val onListItemClickedListener: OnListItemClickedListener):
     RecyclerView.Adapter<PlaceRecyclerAdapter.ViewHolder>() {
 
@@ -31,8 +31,8 @@ class PlaceRecyclerAdapter(private val places: List<Place>,
                 placeReasonTextView.text = place.reason
 
                 val dateCreatedOnTextView: TextView = view.findViewById(R.id.date_place_added)
-                val createdOnText = view.context.getString(R.string.created_on, place.formattedDate())
-                dateCreatedOnTextView.text = createdOnText
+//                val createdOnText = view.context.getString(R.string.created_on, place.formattedDate())
+ //               dateCreatedOnTextView.text = createdOnText
 
                 val mapIcon: ImageView = view.findViewById(R.id.map_icon)
                 mapIcon.setOnClickListener{
