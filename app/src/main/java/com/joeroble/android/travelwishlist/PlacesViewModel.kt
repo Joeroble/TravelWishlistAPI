@@ -17,6 +17,7 @@ class PlacesViewModel: ViewModel() {
     private val placeRepository = PlaceRepository()
 
     val allPlaces = MutableLiveData<List<Place>>(listOf<Place>())
+    val userMessage = MutableLiveData<String>(null)
 
     init{
         getPlaces()
@@ -24,23 +25,44 @@ class PlacesViewModel: ViewModel() {
 
     fun getPlaces(){
         viewModelScope.launch{
-            val places = placeRepository.getAllPlaces()
-            allPlaces.postValue(places)
+            val apiResult = placeRepository.getAllPlaces()
+            if(apiResult.status == ApiStatus.SUCCESS){
+                allPlaces.postValue(apiResult.data)
+            }
+                userMessage.postValue(apiResult.message)
         }
     }
 
     fun addNewPlace(place: Place){
+        viewModelScope.launch {
+            val apiResult = placeRepository.addPlace(place)
+            updateUI(apiResult)
 
-
+        }
     }
 
-
-    fun deletePlace(place: Place){
-
-    }
 
     fun updatePlace(place: Place){
-
+        viewModelScope.launch {
+            val apiResult = placeRepository.updatePlace(place)
+            updateUI(apiResult)
+        }
     }
+
+    fun deletePlace(place: Place){
+        viewModelScope.launch{
+            val apiResult = placeRepository.deletePlace(place)
+            updateUI(apiResult)
+        }
+    }
+
+    private fun updateUI(result: ApiResult<Any>){
+        if(result.status == ApiStatus.SUCCESS) {
+            getPlaces()
+        }
+        userMessage.postValue(result.message)
+    }
+
+
 
 }

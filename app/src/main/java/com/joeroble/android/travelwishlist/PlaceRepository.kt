@@ -2,6 +2,7 @@ package com.joeroble.android.travelwishlist
 
 import android.util.Log
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -23,23 +24,84 @@ class PlaceRepository {
 
     private val placeService = retrofit.create(PlaceService::class.java)
 
-    suspend fun getAllPlaces(): List<Place>{
+
+    suspend fun <T: Any> apiCall(apiCallFunction: suspend () -> Response<T>,
+                                 successMessage: String?, failMessage: String?): ApiResult<T>{
         try {
-            val response = placeService.getAllPlaces()
+//            val response = placeService.getAllPlaces() // replace with a call to the function definition that's provided as an argument
 
-
+                val response = apiCallFunction.invoke()
             if (response.isSuccessful) { // connected, got data back
-                val places = response.body() ?: listOf()
-                return places
-                //TODO more error handling!
+                Log.d(TAG, "Response body{${response.body()}}")
+
+                return ApiResult(ApiStatus.SUCCESS, response.body(), null)
             }
             else { // connected to the server but server sent an error message
-                Log.e(TAG," Error connecting to API server ${response.errorBody()}")
-                return listOf()
+                Log.e(TAG," Server error ${response.errorBody()}")
+                return ApiResult(ApiStatus.SERVER_ERROR, null, failMessage)
             }
         }catch (ex: Exception){ // can't connect to server - network error
             Log.e(TAG," Error connecting to API server", ex)
-            return listOf()
+            return ApiResult(ApiStatus.NETWORK_ERROR, null, "Can't connect to server")
         }
+    }
+
+
+
+
+
+
+    suspend fun getAllPlaces(): ApiResult<List<Place>>{
+        return apiCall(placeService::getAllPlaces, null, "Error fetching places from server")
+    }
+
+    suspend fun addPlace(place: Place): ApiResult<Place> {
+
+        return apiCall(
+            {placeService.addPlace(place)}
+            ,"Place created!",
+            "Error adding place - is name unique?"
+        )
+
+    }
+
+    suspend fun updatePlace(place: Place): ApiResult<Place> {
+
+        // todo avoid writing some error handling code again
+        // todo report errors/success to user
+        // - success - operation completed successfully - we may have data
+        // - connected but server reported error
+        // - can't connect, network error
+
+        if (place.id == null) {
+            Log.e(TAG, "Error - trying to update place with no ID")
+            return ApiResult(
+                ApiStatus.SERVER_ERROR,
+                null,
+                "Error - trying to update place with no ID"
+            )
+        } else {
+          return apiCall({placeService.updatePlace(place, place.id)},
+          "Place updated!",
+          "Error updating place")
+
+        }
+    }
+
+    suspend fun deletePlace(place: Place): ApiResult<String>{
+
+        if (place.id == null) {
+            Log.e(TAG, "Error - trying to delete place with no ID")
+            return ApiResult(
+                ApiStatus.SERVER_ERROR,
+                null,
+                "Error - trying to delete place with no ID")
+        } else {
+            return apiCall({placeService.deletePlace(place.id)},
+                "Place updated!",
+                "Error updating place")
+
+        }
+
     }
 }

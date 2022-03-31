@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
     private lateinit var addNewPlaceButton: Button
     private lateinit var placeListRecyclerView: RecyclerView
     private lateinit var newPlaceReasonEditText: EditText
-
+    private lateinit var wishListContainer: View
     private lateinit var placeRecyclerAdapter: PlaceRecyclerAdapter
 
     private val placesViewModel: PlacesViewModel by lazy {
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         addNewPlaceButton = findViewById(R.id.add_new_place_button)
         newPlaceEditText = findViewById(R.id.new_place_name)
         newPlaceReasonEditText = findViewById(R.id.new_place_reason)
-
+        wishListContainer = findViewById(R.id.wishlist_container)
 //        val places = placesViewModel.getPlaces() // list of place objects
 
        placeRecyclerAdapter = PlaceRecyclerAdapter(listOf(), this)
@@ -56,6 +57,12 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
         placesViewModel.allPlaces.observe(this){places ->
             placeRecyclerAdapter.places = places
             placeRecyclerAdapter.notifyDataSetChanged()
+        }
+
+        placesViewModel.userMessage.observe(this){message ->
+            if(message != null){
+                Snackbar.make(wishListContainer, message, Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -113,8 +120,9 @@ class MainActivity : AppCompatActivity(), OnListItemClickedListener, OnDataChang
 //    }
 
     override fun onListItemDeleted(position: Int) {
-  //    val deletedPlace =  placesViewModel.deletePlace(position)
-        placeRecyclerAdapter.notifyItemRemoved(position)
+      val place = placeRecyclerAdapter.places[position]
+      placesViewModel.deletePlace(place)
+//        placeRecyclerAdapter.notifyItemRemoved(position)
 
 //        Snackbar.make(findViewById(R.id.wishlist_container), getString(R.string.place_deleted,deletedPlace.name), Snackbar.LENGTH_LONG)
 //            .setActionTextColor(resources.getColor(R.color.red))
